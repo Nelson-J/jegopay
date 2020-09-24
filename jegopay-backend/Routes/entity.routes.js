@@ -1,0 +1,1 @@
+const entity = require('../Controllers/entity.controller');

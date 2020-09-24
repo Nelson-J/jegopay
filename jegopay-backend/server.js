@@ -1,4 +1,6 @@
 const express = require('express');
+const routes = require('./Routes/entity.routes');
+
 const port = 3000; //set your port
 
 app = express();
