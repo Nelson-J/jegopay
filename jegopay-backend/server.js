@@ -11,7 +11,7 @@ app.get('/', function(req, res){
 });
 
 //Accept urls of type host:port/users
-app.use('/users',routes);
+app.use('/users',routes); //returns an empty object at the moment since database is empty
 
 //handle errors
 //404
