@@ -27,3 +27,5 @@ dbconnection.connect(function(err, result){
         });
     });
 });
+
+module.exports = dbconnection;
