@@ -8,4 +8,4 @@ router.get('/', entity.findAll);
 
 //other actions to be defined
 
-modules.exports = router;
+module.exports = router;
