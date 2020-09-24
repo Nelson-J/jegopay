@@ -10,6 +10,9 @@ app.get('/', function(req, res){
     res.send('Test success');
 });
 
+//Accept urls of type host:port/users
+app.use('/users',routes);
+
 //handle errors
 //404
 app.use(function(req, res, next){
