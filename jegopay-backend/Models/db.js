@@ -9,9 +9,14 @@ dbconnection = mysql.createConnection({
 });
 
 //initialise the database to be used;
-//dbcreate = `CREATE DATABASE IF NOT EXISTS ${dbconfig.DATABASE};`;
+dbcreate = `CREATE DATABASE IF NOT EXISTS ${dbconfig.DATABASE};
+    USE ${dbconfig.DATABASE};`;
 
 dbconnection.connect(function(err, result){
     if(err) throw err;
-    console.log('Server connected');
+    //console.log('Server connected');
+    dbconnection.query(dbcreate,function(err,result){
+        if(err) throw err;
+        console.log('Connected to database');
+    });
 });
