@@ -11,7 +11,7 @@ Entity = function(entity){
 //placeholder to get all entities
 Entity.getAll = result =>{
     const sql = 'SELECT * FROM entities';
-    db.query(sql, function(err, res){
+    db.query(sql, async function(err, res){
         if(err) throw err;
         console.log('Result: ', res); //comment out
         result(null,res); //attach db output to response for client

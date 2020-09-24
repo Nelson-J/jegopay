@@ -23,7 +23,7 @@ dbconnection.connect(function(err, result){
         //console.log('Connected to database');
         dbconnection.query(schema, function(err, result){
             if(err) throw error;
-            console.log('Table created');
+            console.log('Schema created');
         });
     });
 });
