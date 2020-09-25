@@ -1,8 +1,8 @@
 #This text explains how best to contribute to development:
 
 The project has two branches:
-*development branch : For development activities
-*production branch : For deploying the application
+- development branch : For development activities
+- master branch : For deploying the application
 
 If you are working on a new feature you would like to implement,
 1. Create a local development branch
