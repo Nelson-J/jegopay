@@ -1,4 +1,6 @@
 const express = require('express');
+const routes = require('./Routes/entity.routes');
+
 const port = 3000; //set your port
 
 app = express();
@@ -7,6 +9,9 @@ app = express();
 app.get('/', function(req, res){
     res.send('Test success');
 });
+
+//Accept urls of type host:port/users
+app.use('/users',routes); //returns an empty object at the moment since database is empty
 
 //handle errors
 //404
