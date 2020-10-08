@@ -1,4 +1,5 @@
 const db = require('./db');
+const bcrypt = require('bcrypt');
 
 //User placeholder
 User = function(user) {
@@ -25,4 +26,40 @@ User.getAll = result => {
     });
 }
 
-module.exports = User;
+User.create = (newUser, result) => {
+    sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+        if (err) {
+            console.log("Error", err);
+            result(err, null);
+            return;
+        }
+
+        console.log("Created User: ", { id: res.insertId, username: res.insertusername });
+        result(null, { id: res.insertId, username: res.insertusername })
+    });
+};
+
+//Compare two passwords.
+function comparePasswords(password, callback) {
+    // TODO: Password comparison logic.
+    bcrypt.compare(password, this.password, function(error, isMatch) {
+        if (error) {
+            return callback(error);
+        }
+
+        return callback(null, isMatch);
+    });
+}
+
+// Hashes the password for a user object.
+function hashPassword(user) {
+    // TODO: Password hashing logic.
+    user = User()
+    if (user.changed('password')) {
+        return bcrypt.hash(user.password, 10).then(function(password) {
+            user.password = password;
+        });
+    }
+}
+
+module.exports = { User, comparePasswords, hashPassword }
