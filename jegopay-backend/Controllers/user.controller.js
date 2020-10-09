@@ -1,5 +1,4 @@
 const User = require('../Models/users.model');
-const bcrypt = require('bcrypt');
 const { hashPassword } = require('../Models/users.model');
 
 
@@ -8,6 +7,8 @@ var AuthController = {};
 
 // User Registration Logic.
 AuthController.register = function(req, res) {
+    var today = new Date();
+
     // Validate request.
     if (!req.body) {
         res.status(400).send({
@@ -24,7 +25,7 @@ AuthController.register = function(req, res) {
         fullname: req.body.fullname,
         address: req.body.address,
         contact: req.body.contact,
-        //date_joined uses default.
+        date_joined: today,
         //is_superuser uses default.
         //is_merchant uses default.
     });
@@ -39,7 +40,20 @@ AuthController.register = function(req, res) {
 };
 
 
+findAll = (req, res) => {
+    User.getAll((err, data) => {
+        if (err)
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving users."
+            });
+        else res.send(data);
+    });
+};
+
 // User Login Logic.
 
 
-module.exports = AuthController;
+module.exports = {
+    AuthController,
+    findAll,
+}
