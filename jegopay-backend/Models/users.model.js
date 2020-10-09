@@ -2,7 +2,7 @@ const db = require('./db');
 const bcrypt = require('bcrypt');
 
 //User placeholder
-User = function(user) {
+ModelUser = function(user) {
     this.id = user.id;
     this.username = user.username;
     this.password = user.password;
@@ -16,8 +16,9 @@ User = function(user) {
     this.is_merchant = user.is_merchant;
 }
 
+
 //placeholder to get all users
-User.getAll = result => {
+ModelUser.getAll = result => {
     const sql = 'SELECT * FROM users';
     db.query(sql, async function(err, res) {
         if (err) throw err;
@@ -26,7 +27,8 @@ User.getAll = result => {
     });
 }
 
-User.create = (newUser, result) => {
+// Create a user.
+ModelUser.create = (newUser, result) => {
     sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
         if (err) {
             console.log("Error", err);
@@ -36,6 +38,25 @@ User.create = (newUser, result) => {
 
         console.log("Created User: ", { id: res.insertId, username: res.insertusername });
         result(null, { id: res.insertId, username: res.insertusername })
+    });
+};
+
+
+// Find user by ID.
+ModelUser.findById = (userId, result) => {
+    sql.query('SELECT * FROM users WHERE id = ${ userId }', (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if (res.length) {
+            console.log("found user: ", res[0]);
+            result(null, res[0]);
+            return;
+        }
+        // user not found with id.
+        result({ kind: "not_found" }, null);
     });
 };
 
@@ -54,7 +75,6 @@ function comparePasswords(password, callback) {
 // Hashes the password for a user object.
 function hashPassword(user) {
     // TODO: Password hashing logic.
-    user = User()
     if (user.changed('password')) {
         return bcrypt.hash(user.password, 10).then(function(password) {
             user.password = password;
@@ -62,4 +82,4 @@ function hashPassword(user) {
     }
 }
 
-module.exports = { User, comparePasswords, hashPassword }
+module.exports = { ModelUser, comparePasswords, hashPassword }
