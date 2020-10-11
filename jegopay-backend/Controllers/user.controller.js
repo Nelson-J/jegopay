@@ -1,16 +1,16 @@
 const User = require('../Models/users.model');
-const { hashPassword } = require('../Models/users.model');
+//const { hashPassword } = require('../Models/users.model');
 
 
 // Authentication controller.
 var AuthController = {};
 
 // User Registration Logic.
-AuthController.register = function(req, res) {
+AuthController.register = function(req, res, next) {
     var today = new Date();
 
     // Validate request.
-    if (!req.body) {
+    if (!req.body.username || !req.body.password) {
         res.status(400).send({
             message: "Content cannot be empty!",
         });
@@ -19,7 +19,7 @@ AuthController.register = function(req, res) {
     // Create user.
     const user = new User({
         username: req.body.username,
-        password: hashPassword(req.body),
+        password: req.body.password,
         email: req.body.email,
         idcardno: req.body.idcardno,
         fullname: req.body.fullname,
@@ -37,23 +37,23 @@ AuthController.register = function(req, res) {
         });
         else res.send(data);
     });
+    next();
 };
 
-
-findAll = (req, res) => {
-    User.getAll((err, data) => {
-        if (err)
+// Retrieve all registered users.
+AuthController.findAll = function(req, res, next) {
+    User.getAll(function(err, result) {
+        if (err) {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving users."
+                message: err.message || "Some error occured while retrieving users."
             });
-        else res.send(data);
+        }
+        res.send(JSON.stringify(result));
     });
-};
+    next();
+}
 
 // User Login Logic.
 
 
-module.exports = {
-    AuthController,
-    findAll,
-}
+module.exports = AuthController

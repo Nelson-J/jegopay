@@ -2,7 +2,7 @@ const db = require('./db');
 const bcrypt = require('bcrypt');
 
 //User placeholder
-ModelUser = function(user) {
+User = function(user) {
     this.id = user.id;
     this.username = user.username;
     this.password = user.password;
@@ -18,7 +18,7 @@ ModelUser = function(user) {
 
 
 //placeholder to get all users
-ModelUser.getAll = result => {
+User.getAll = result => {
     const sql = 'SELECT * FROM users';
     db.query(sql, async function(err, res) {
         if (err) throw err;
@@ -28,7 +28,7 @@ ModelUser.getAll = result => {
 }
 
 // Create a user.
-ModelUser.create = (newUser, result) => {
+User.create = (newUser, result) => {
     sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
         if (err) {
             console.log("Error", err);
@@ -43,7 +43,7 @@ ModelUser.create = (newUser, result) => {
 
 
 // Find user by ID.
-ModelUser.findById = (userId, result) => {
+User.findById = (userId, result) => {
     sql.query('SELECT * FROM users WHERE id = ${ userId }', (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -73,13 +73,13 @@ function comparePasswords(password, callback) {
 }
 
 // Hashes the password for a user object.
-function hashPassword(user) {
+function hashPassword(password) {
     // TODO: Password hashing logic.
-    if (user.changed('password')) {
-        return bcrypt.hash(user.password, 10).then(function(password) {
-            user.password = password;
+    if (password) {
+        return bcrypt.hash(password, 10).then(function(password) {
+            this.password = password;
         });
     }
 }
 
-module.exports = { ModelUser, comparePasswords, hashPassword }
+module.exports = { User, comparePasswords, hashPassword }
