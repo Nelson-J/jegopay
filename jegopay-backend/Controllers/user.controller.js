@@ -1,5 +1,5 @@
 const User = require('../Models/users.model');
-//const { hashPassword } = require('../Models/users.model');
+const { hashPassword } = require('../Models/users.model');
 
 
 // Authentication controller.
@@ -8,23 +8,30 @@ var AuthController = {};
 // User Registration Logic.
 AuthController.register = function(req, res, next) {
     var today = new Date();
+    params = req.body;
 
     // Validate request.
-    if (!req.body.username || !req.body.password) {
+    if (!params) {
         res.status(400).send({
             message: "Content cannot be empty!",
-        });
+        })
+
+        if (hashPassword(params.password) !== hashPassword(params.password2)) {
+            return res.status(400).send({ message: "Passwords must be the same." });
+        }
+        return;
     }
 
     // Create user.
     const user = new User({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        idcardno: req.body.idcardno,
-        fullname: req.body.fullname,
-        address: req.body.address,
-        contact: req.body.contact,
+        username: params.username,
+        password: hashPassword(params.password),
+        password2: params.password2,
+        email: params.email,
+        idcardno: params.idcardno,
+        fullname: params.fullname,
+        address: params.address,
+        contact: params.contact,
         date_joined: today,
         //is_superuser uses default.
         //is_merchant uses default.
@@ -54,6 +61,8 @@ AuthController.findAll = function(req, res, next) {
 }
 
 // User Login Logic.
+AuthController.authenticate = function(req, res, next) {
 
+}
 
 module.exports = AuthController

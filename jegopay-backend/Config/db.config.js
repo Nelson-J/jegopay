@@ -5,5 +5,5 @@ module.exports = {
     USER: 'jegouser',
     PASSWORD: 'password',
     DATABASE: 'jegopay',
-    SCHEMA: fs.readFileSync('./jegopay.sql').toString(),
+    SCHEMA: fs.readFileSync('./jegopay.sql').toString()
 }

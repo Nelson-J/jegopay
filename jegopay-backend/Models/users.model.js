@@ -6,6 +6,7 @@ User = function(user) {
     this.id = user.id;
     this.username = user.username;
     this.password = user.password;
+    this.password2 = user.password2;
     this.email = user.email;
     this.idcardno = user.idcardno;
     this.fullname = user.fullname;
@@ -60,17 +61,13 @@ User.findById = (userId, result) => {
     });
 };
 
-//Compare two passwords.
-function comparePasswords(password, callback) {
-    // TODO: Password comparison logic.
-    bcrypt.compare(password, this.password, function(error, isMatch) {
-        if (error) {
-            return callback(error);
-        }
+// Check if a user already exists or not.
+// @param user object with id, username and password.
+User.Exists = (user, result) => {
+    allusers = getAll();
 
-        return callback(null, isMatch);
-    });
 }
+
 
 // Hashes the password for a user object.
 function hashPassword(password) {
