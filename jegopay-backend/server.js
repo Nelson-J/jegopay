@@ -1,7 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const entities = require('./Routes/entity.routes');
-const users = require('./Routes/user.routes');
+const db = require('./models');
+
+// Sync models to database tables
+db.sequelize.sync().then(() => {
+    console.log("Database sync");
+});
 
 const port = 3000; //set your port
 
@@ -15,11 +19,6 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.send('Test success');
 });
-
-//Accept urls of type host:port/users
-app.use('/entities', entities); //returns an empty object at the moment since database is empty
-
-app.use('/', users);
 
 //handle errors
 //404

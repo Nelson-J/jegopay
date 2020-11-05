@@ -1,10 +1,13 @@
-const fs = require('fs');
-//var sql = fs.readFileSync('jegopay.sql', 'utf8').toString();
-
 module.exports = {
     HOST: 'localhost',
     USER: 'jegouser',
     PASSWORD: 'password',
     DATABASE: 'jegopay',
-    //SCHEMA: sql
-}
+    dialect: "mysql",
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
+};
