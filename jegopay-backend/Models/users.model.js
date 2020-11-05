@@ -2,24 +2,24 @@ const db = require('./db');
 const bcrypt = require('bcrypt');
 
 //User placeholder
-User = function(user) {
+ModelUser = function(user) {
     this.id = user.id;
     this.username = user.username;
     this.password = user.password;
-    this.password2 = user.password2;
     this.email = user.email;
     this.idcardno = user.idcardno;
     this.fullname = user.fullname;
     this.address = user.address;
     this.contact = user.contact;
     this.date_joined = user.date_joined;
+    this.last_login = user.last_login;
     this.is_superuser = user.is_superuser;
     this.is_merchant = user.is_merchant;
 }
 
 
 //placeholder to get all users
-User.getAll = result => {
+ModelUser.getAll = result => {
     const sql = 'SELECT * FROM users';
     db.query(sql, async function(err, res) {
         if (err) throw err;
@@ -29,23 +29,20 @@ User.getAll = result => {
 }
 
 // Create a user.
-User.create = (newUser, result) => {
-    sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
-        if (err) {
-            console.log("Error", err);
-            result(err, null);
-            return;
-        }
+ModelUser.create = (user, result) => {
 
-        console.log("Created User: ", { id: res.insertId, username: res.insertusername });
-        result(null, { id: res.insertId, username: res.insertusername })
+    db.execute("INSERT INTO users SET VALUES ?", [user.username, user.password, user.email, user.idcardno, user.fullname, user.address, user.contact, user.date_joined,
+        user.last_login, user.is_superuser, user.is_merchant
+    ], (err, res) => {
+        if (err) throw err;
+        result(null, res);
     });
 };
 
 
 // Find user by ID.
-User.findById = (userId, result) => {
-    sql.query('SELECT * FROM users WHERE id = ${ userId }', (err, res) => {
+ModelUser.findById = (userId, result) => {
+    db.execute('SELECT * FROM users WHERE id = ?', [userId], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -63,8 +60,13 @@ User.findById = (userId, result) => {
 
 // Check if a user already exists or not.
 // @param user object with id, username and password.
-User.Exists = (user, result) => {
-    allusers = getAll();
+ModelUser.exists = (user, result) => {
+    db.execute('SELECT (username, password) FROM users WHERE username = ? , password = ?', [user.username, user.password], function(err, res) {
+        if (err) {
+            res.status(400).send({ msg: err || "User does not exist." });
+        }
+        return result;
+    });
 
 }
 
@@ -73,10 +75,15 @@ User.Exists = (user, result) => {
 function hashPassword(password) {
     // TODO: Password hashing logic.
     if (password) {
-        return bcrypt.hash(password, 10).then(function(password) {
-            this.password = password;
-        });
+        return bcrypt.hash(password, 10), (err, hash) => {
+            if (err) {
+                return res.status(500).send({ msg: err });
+            } else { return String(hash) };
+        }
     }
 }
 
-module.exports = { User, comparePasswords, hashPassword }
+module.exports = {
+    ModelUser: ModelUser,
+    hashPassword: hashPassword
+}

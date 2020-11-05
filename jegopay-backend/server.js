@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 //Accept urls of type host:port/users
 app.use('/entities', entities); //returns an empty object at the moment since database is empty
 
-app.use('', users);
+app.use('/', users);
 
 //handle errors
 //404

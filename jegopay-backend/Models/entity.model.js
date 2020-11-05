@@ -1,7 +1,7 @@
 const db = require('./db')
 
 //entity placeholder
-Entity = function(entity){
+Entity = function(entity) {
     this.id = entity.id;
     this.name = entity.name;
     this.location = entity.location;
@@ -9,12 +9,12 @@ Entity = function(entity){
 }
 
 //placeholder to get all entities
-Entity.getAll = result =>{
+Entity.getAll = result => {
     const sql = 'SELECT * FROM entities';
-    db.query(sql, async function(err, res){
-        if(err) throw err;
+    db.query(sql, async function(err, res) {
+        if (err) throw err;
         console.log('Result: ', res); //comment out
-        result(null,res); //attach db output to response for client
+        result(null, res); //attach db output to response for client
     });
 }
 

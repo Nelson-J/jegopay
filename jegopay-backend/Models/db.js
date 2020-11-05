@@ -14,18 +14,18 @@ dbcreate = `CREATE DATABASE IF NOT EXISTS ${dbconfig.DATABASE};
     USE ${dbconfig.DATABASE};`;
 
 //table (database schema) create place holder
-schema = dbconfig.SCHEMA;
+//schema = dbconfig.SCHEMA;
 
-dbconnection.connect(function(err, result) {
+dbconnection.connect(function(err) {
     if (err) throw err;
     //console.log('Server connected');
-    dbconnection.query(dbcreate, function(err, result) {
+    dbconnection.query(dbcreate, function(err) {
         if (err) throw err;
-        //console.log('Connected to database');
-        dbconnection.query(schema, function(err, result) {
+        console.log('Connected to database');
+        /*dbconnection.query(schema, function(err) {
             if (err) throw error;
             console.log('Schema created');
-        });
+        });*/
     });
 });
 

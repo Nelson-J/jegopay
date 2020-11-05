@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `jegopay`.`users` (
   `email` VARCHAR(255) NULL,
   `password` VARCHAR(32) NOT NULL,
   `date_joined` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login` DATETIME NULL,
   `fullname` VARCHAR(255) NULL,
   `address` LONGTEXT NULL,
   `idcardno` INT(9) NULL COMMENT 'ID Card number.',
