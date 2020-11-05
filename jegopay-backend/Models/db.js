@@ -1,6 +1,6 @@
-const config = require("./db.config.js");
-
+const config = require("../config/db.config.js");
 const Sequelize = require("sequelize");
+
 const sequelize = new Sequelize(
     config.DATABASE,
     config.USER,
@@ -23,7 +23,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require("../models/users.model.js")(sequelize, Sequelize);
+db.user = require("./users.model.js")(sequelize, Sequelize);
 
 sequelize
     .authenticate()

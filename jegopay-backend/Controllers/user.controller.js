@@ -1,4 +1,4 @@
-const model = require('../Models/users.model');
+const model = require('../models/users.model');
 const User = model.ModelUser;
 const hashPassword = model.hashPassword;
 
